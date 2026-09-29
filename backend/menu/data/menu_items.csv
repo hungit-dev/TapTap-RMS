@@ -1,0 +1,17 @@
+category,name,description,price,image_url,is_available
+Appetizers,Garlic Bread,Toasted bread with garlic and butter,6.99,,True
+Appetizers,Chicken Wings,Crispy chicken wings with your choice of sauce,10.99,,True
+Burgers,Classic Burger,Beef patty with lettuce tomato and cheese,12.99,,True
+Burgers,Chicken Burger,Crispy chicken breast with lettuce and mayo,13.99,,True
+Pizza,Cheese Pizza,Classic pizza with tomato sauce and mozzarella,14.99,,True
+Pizza,Pepperoni Pizza,Pizza topped with pepperoni and mozzarella,16.99,,True
+Pasta,Spaghetti Bolognese,Spaghetti with beef tomato sauce,15.99,,True
+Pasta,Chicken Alfredo,Fettuccine pasta with chicken and Alfredo sauce,16.99,,True
+Salads,Caesar Salad,Romaine lettuce with Caesar dressing and croutons,9.99,,True
+Soups,Tomato Soup,Creamy tomato soup with herbs,7.99,,True
+Sides,French Fries,Crispy golden French fries,4.99,,True
+Sides,Onion Rings,Crispy battered onion rings,5.99,,True
+Desserts,Chocolate Cake,Chocolate cake with chocolate frosting,7.99,,True
+Desserts,Cheesecake,Classic creamy cheesecake,6.99,,True
+Drinks,Coca Cola,Cold soft drink,2.99,,True
+Drinks,Lemonade,Fresh homemade lemonade,3.49,,True

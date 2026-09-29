@@ -1,0 +1,11 @@
+name,display_order,is_active
+Appetizers,1,True
+Burgers,2,True
+Pizza,3,True
+Pasta,4,True
+Main Dishes,5,True
+Salads,6,True
+Soups,7,True
+Sides,8,True
+Desserts,9,True
+Drinks,10,True
