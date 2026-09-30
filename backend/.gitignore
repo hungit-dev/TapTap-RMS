@@ -35,3 +35,6 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+# firebase
+firebase-service-account.json
