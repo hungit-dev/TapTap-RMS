@@ -23,7 +23,7 @@ class Command(BaseCommand):
                     name=row["name"],
                     description=row["description"],
                     price=row["price"],
-                    image_url=row["image_url"] or None,
+                    image_url=row["image_url"],
                     is_available=row["is_available"].lower() == "true",
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported menu categories from "%s"' % csv_file))
