@@ -5,8 +5,11 @@ class Table(models.Model):
     STATUS_CHOICES = [
         ("AVAILABLE", "Available"),
         ("OCCUPIED", "Occupied"),
-        ("RESERVED", "Reserved"),
-        ("CLEANING", "Cleaning"),
+        ("ORDERING", "Ordering"),
+        ("PREPARING","Preparing"),
+        ("FOOD_SERVED","Food served"),
+        ("PAYMENT_PENDING","Payment pending")
+        
     ]
     table_number = models.PositiveIntegerField(default=1, unique=True)
     capacity = models.PositiveIntegerField(default=2)
