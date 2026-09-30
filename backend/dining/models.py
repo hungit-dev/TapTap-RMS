@@ -4,14 +4,13 @@ from accounts.models import User
 class Table(models.Model):
     STATUS_CHOICES = [
         ("AVAILABLE", "Available"),
-        ("OCCUPIED", "Occupied"),
         ("ORDERING", "Ordering"),
         ("PREPARING","Preparing"),
         ("FOOD_SERVED","Food served"),
         ("PAYMENT_PENDING","Payment pending")
         
     ]
-    table_number = models.PositiveIntegerField(default=1, unique=True)
+    table_number = models.PositiveIntegerField(unique=True)
     capacity = models.PositiveIntegerField(default=2)
     status = models.CharField(
         max_length=20,
