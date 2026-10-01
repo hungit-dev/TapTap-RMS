@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from rest_framework import serializers
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Table, TableSession
@@ -18,3 +18,10 @@ class TableSessionViewSet(ModelViewSet):
     serializer_class = TableSessionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["table", "staff"]
+
+    def validate_staff(self, value):
+        if value.role not in ("SERVER", "MANAGER"):
+            raise serializers.ValidationError(
+                "Staff must be a server or manager."
+            )
+        return value
