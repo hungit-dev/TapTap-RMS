@@ -12,16 +12,15 @@ class TableViewSet(ModelViewSet):
     serializer_class = TableSerializer
 
 class TableSessionViewSet(ModelViewSet):
-    permission_classes = [IsManager | IsServer]
-
     queryset = TableSession.objects.all()
     serializer_class = TableSessionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["table", "staff"]
 
-    def validate_staff(self, value):
-        if value.role not in ("SERVER", "MANAGER"):
-            raise serializers.ValidationError(
-                "Staff must be a server or manager."
-            )
-        return value
+    def get_permissions(self):
+        if self.action in ["destroy"]:
+            return [IsManager()]
+        return [(IsManager | IsServer)()]
+    
+    def perform_create(self, serializer):
+        serializer.save(staff=self.request.user)

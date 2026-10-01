@@ -8,13 +8,8 @@ class TableSerializer(serializers.ModelSerializer):
 
 
 class TableSessionSerializer(serializers.ModelSerializer):
-    def validate_staff(self, user):
-        if user.role not in ["SERVER", "MANAGER"]:
-            raise serializers.ValidationError(
-                "User must have the SERVER or MANAGER role."
-            )
-        return user
     
     class Meta:
         model = TableSession
         fields = '__all__'
+        read_only_fields = ("id","staff", "seated_at", "closed_at")
