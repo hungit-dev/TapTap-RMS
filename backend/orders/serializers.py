@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import PromoCode, Order, OrderItem
 from .services import calculate_order_totals
 from django.db import transaction
+from django.utils import timezone
+
 
 class PromoCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,12 +51,25 @@ class OrderSerializer(serializers.ModelSerializer):
         source="order_items"
     )
 
+    # frontend passes api request that contains promo_code field-> backend accepts promo code as a string - > get the promo code obj -> pass it to validated_data
+    promo_code = serializers.SlugRelatedField(
+        queryset=PromoCode.objects.all(),
+        slug_field="code",
+        required=False,
+        allow_null=True
+    )
+
     class Meta:
         model=Order
         fields = "__all__"
         read_only_fields = [
             "id",
             "created_by",
+            "subtotal",
+            "discount_amount",
+            "tax_amount",
+            "total",
+            "created_at",
         ]
 
     def create(self, validated_data):
@@ -93,3 +108,20 @@ class OrderSerializer(serializers.ModelSerializer):
             order.save()
 
         return order
+
+    def validate_promo_code(self, value):
+        now = timezone.localtime()  
+
+        if not value.is_active:
+            raise serializers.ValidationError(
+                "This promo code is not active."
+            )
+        if now < value.starts_at:
+            raise serializers.ValidationError(
+                "This promo code is not active yet."
+            )
+        if now > value.expires_at:
+            raise serializers.ValidationError(
+                "This promo code has expired."
+            )
+        return value
