@@ -43,7 +43,7 @@ class Order(models.Model):
     promo_code = models.ForeignKey(PromoCode, on_delete=models.SET_NULL,related_name="orders", null=True, blank=True)
     order_number = models.CharField(max_length=20, unique = True)
     order_type= models.CharField(max_length=30, choices=TYPE_CHOICES)
-    status = models.CharField(max_length=30, choices = STATUS_CHOICES, default = "PlACED")
+    status = models.CharField(max_length=30, choices = STATUS_CHOICES, default = "PLACED")
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     preparing_started_at = models.DateTimeField(null=True,blank=True)

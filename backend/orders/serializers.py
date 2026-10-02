@@ -65,13 +65,19 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = [
             "id",
             "created_by",
+            "status",
+            "created_at",
+            "preparing_started_at",
+            "ready_at",
+            "food_served_at",
+            "completed_at",
+            "cancelled_at",
             "subtotal",
             "discount_amount",
             "tax_amount",
             "total",
-            "created_at",
         ]
-
+        
     def create(self, validated_data):
         # Remove items because it is not an Order model field
         items_data = validated_data.pop("order_items")
@@ -110,7 +116,7 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def validate_promo_code(self, value):
-        now = timezone.localtime()  
+        now = timezone.now()
 
         if not value.is_active:
             raise serializers.ValidationError(
