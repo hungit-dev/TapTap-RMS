@@ -4,11 +4,7 @@ from accounts.models import User
 class Table(models.Model):
     STATUS_CHOICES = [
         ("AVAILABLE", "Available"),
-        ("ORDERING", "Ordering"),
-        ("PREPARING","Preparing"),
-        ("FOOD_SERVED","Food served"),
-        ("PAYMENT_PENDING","Payment pending")
-        
+        ("OCCUPIED", "Occupied"),
     ]
     table_number = models.PositiveIntegerField(unique=True)
     capacity = models.PositiveIntegerField(default=2)
