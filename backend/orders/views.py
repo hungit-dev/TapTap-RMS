@@ -114,7 +114,7 @@ class OrderViewSet(ModelViewSet):
         order.save()
         return Response(OrderSerializer(order).data)
 
-    @action(detail=True, methods=["post"],)
+    @action(detail=True, methods=["post"],url_path="cancel")
     def cancel(self, request, pk=None):
         order = self.get_object()
         if order.status in ["COMPLETED", "CANCELLED"]:
