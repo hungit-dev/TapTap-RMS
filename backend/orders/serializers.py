@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import PromoCode, Order, OrderItem
+from .services import calculate_order_totals
+from django.db import transaction
 
 class PromoCodeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,15 +21,6 @@ class PromoCodeSerializer(serializers.ModelSerializer):
             
         return data
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Order
-        fields = "__all__"
-        read_only_fields = [
-            "id",
-            "created_by",
-        ]
-   
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,17 +40,56 @@ class OrderItemSerializer(serializers.ModelSerializer):
             )
         return value
 
-    def validate_order(self, value):
-        if value.status in ["COMPLETED", "CANCELLED"]:
-            raise serializers.ValidationError(
-                "Cannot add items to a completed or cancelled order."
-            )
-        return value
+
+    
+class OrderSerializer(serializers.ModelSerializer):
+    # get all items that belong to an order and put them in a list
+    items = OrderItemSerializer(
+        many=True,
+        source="order_items"
+    )
+
+    class Meta:
+        model=Order
+        fields = "__all__"
+        read_only_fields = [
+            "id",
+            "created_by",
+        ]
 
     def create(self, validated_data):
-        menu_item = validated_data["menu_item"]
+        # Remove items because it is not an Order model field
+        items_data = validated_data.pop("order_items")
+        # Use a transaction so that any error rolls back all changes.
+        with transaction.atomic():
+            # Create the order
+            order = Order.objects.create(**validated_data)
 
-        validated_data["item_name"] = menu_item.name
-        validated_data["unit_price"] = menu_item.price
+            # Create the order items
+            for item_data in items_data:
+                OrderItem.objects.create(
+                    order=order,
+                    menu_item=item_data["menu_item"],
+                    item_name=item_data["menu_item"].name,
+                    unit_price=item_data["menu_item"].price,
+                    quantity=item_data["quantity"],
+                    notes=item_data.get("notes", "")
+                )
 
-        return super().create(validated_data)
+            # Calculate order totals
+            subtotal, discount_amount, tax_amount, total = (
+                calculate_order_totals(
+                    order,
+                    tax_percentage=5 # Alberta current tax
+                )
+            )
+
+            # Save calculated totals
+            order.subtotal = subtotal
+            order.discount_amount = discount_amount
+            order.tax_amount = tax_amount
+            order.total = total
+
+            order.save()
+
+        return order
