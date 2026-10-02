@@ -12,7 +12,7 @@ def calculate_order_totals(order, tax_percentage):
     # calculate discount if there is any
     if order.promo_code:
         promo = order.promo_code
-        # check minimum order amount
+
         # Check minimum order amount
         if promo.min_amount is not None and subtotal < promo.min_amount:
            raise ValidationError({

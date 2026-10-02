@@ -13,22 +13,17 @@ class HasRole(BasePermission):
             and user.role in self.allowed_roles
         )
 
-
 class IsManager(HasRole):
     allowed_roles = ('MANAGER',)
-
 
 class IsServer(HasRole):
     allowed_roles = ('SERVER', 'MANAGER')
 
-
 class IsKitchen(HasRole):
     allowed_roles = ('KITCHEN', 'MANAGER')
 
-
 class IsDriver(HasRole):
     allowed_roles = ('DRIVER', 'MANAGER')
-
 
 class IsCustomer(HasRole):
     allowed_roles = ('CUSTOMER',)

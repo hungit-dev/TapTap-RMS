@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.utils import timezone
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+
 
 class PromoCodeViewSet(ModelViewSet):
     permission_classes=[IsManager]
@@ -19,6 +19,7 @@ class PromoCodeViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['discount_type']
     search_fields = ["code"]
+
 
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
@@ -113,7 +114,7 @@ class OrderViewSet(ModelViewSet):
         order.save()
         return Response(OrderSerializer(order).data)
 
-    @action(detail=True, methods=["post"],url_path="cancel")
+    @action(detail=True, methods=["post"],)
     def cancel(self, request, pk=None):
         order = self.get_object()
         if order.status in ["COMPLETED", "CANCELLED"]:
@@ -124,7 +125,6 @@ class OrderViewSet(ModelViewSet):
         order.status = "CANCELLED"
         order.cancelled_at = timezone.now()
         order.save()
-
         return Response(OrderSerializer(order).data)
 
 

@@ -8,7 +8,6 @@ class TableSerializer(serializers.ModelSerializer):
 
 
 class TableSessionSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = TableSession
         fields = '__all__'

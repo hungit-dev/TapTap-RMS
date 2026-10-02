@@ -6,5 +6,4 @@ router = DefaultRouter()
 router.register("tables", TableViewSet)
 router.register("table-sessions", TableSessionViewSet)
 
-
 urlpatterns = router.urls
