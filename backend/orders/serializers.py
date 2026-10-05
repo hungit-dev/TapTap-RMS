@@ -64,7 +64,9 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = [
             "id",
+            "customer",
             "created_by",
+            "order-number",
             "status",
             "created_at",
             "preparing_started_at",
@@ -85,6 +87,9 @@ class OrderSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             # Create the order
             order = Order.objects.create(**validated_data)
+
+            # Create the order number based on the order ID
+            order.order_number = f"ORD-{order.id:06d}"
 
             # Create the order items
             for item_data in items_data:

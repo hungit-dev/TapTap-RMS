@@ -41,7 +41,7 @@ class Order(models.Model):
     table_session = models.ForeignKey(TableSession, on_delete=models.PROTECT, related_name="orders", null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name="created_orders", null=True, blank=True)
     promo_code = models.ForeignKey(PromoCode, on_delete=models.SET_NULL,related_name="orders", null=True, blank=True)
-    order_number = models.CharField(max_length=20, unique = True)
+    order_number = models.CharField(max_length=20, unique = True, blank =True, null = True)
     order_type= models.CharField(max_length=30, choices=TYPE_CHOICES)
     status = models.CharField(max_length=30, choices = STATUS_CHOICES, default = "PLACED")
     notes = models.TextField(blank=True)
