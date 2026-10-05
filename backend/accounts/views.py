@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from .models import User
 from .serializers import UserSerializer
+from .permissions import IsManager
 
 # Customer Register View
 class CreateCustomerView(APIView):
@@ -73,14 +74,8 @@ class CreateCustomerView(APIView):
 
 # Employee Register View
 class CreateEmployeeView(APIView):
+    permission_classes = [IsManager]
     def post(self, request):
-        # only manager can create employee account
-        if request.user.role != "MANAGER":
-            return Response(
-                {"error": "Manager access required"},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
         # Get information sent by frontend
         name = request.data.get("name")
         email = request.data.get("email")
