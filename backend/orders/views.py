@@ -22,7 +22,6 @@ class PromoCodeViewSet(ModelViewSet):
 
 
 class OrderViewSet(ModelViewSet):
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ["order_type", "status"]
@@ -129,10 +128,6 @@ class OrderViewSet(ModelViewSet):
 
 
 class OrderItemViewSet(ModelViewSet):
-    queryset = OrderItem.objects.select_related(
-        "order",
-        "menu_item"
-    )
     serializer_class = OrderItemSerializer
 
     def get_permissions(self):
@@ -144,11 +139,15 @@ class OrderItemViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        order_id = self.kwargs["order_pk"]
+        queryset = OrderItem.objects.filter(
+            order_id=order_id
+        )
         if user.role == "CUSTOMER":
-            return OrderItem.objects.filter(
+            queryset = queryset.filter(
                 order__customer=user
-            )
-        return OrderItem.objects.all()
+        )
+        return queryset
 
     # get the order id from url
     def perform_create(self, serializer):

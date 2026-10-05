@@ -116,6 +116,9 @@ class OrderSerializer(serializers.ModelSerializer):
         return order
 
     def validate_promo_code(self, value):
+        if value is None:
+            return value
+        
         now = timezone.now()
 
         if not value.is_active:

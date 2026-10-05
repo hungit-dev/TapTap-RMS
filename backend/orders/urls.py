@@ -7,7 +7,7 @@ router = DefaultRouter()
 # /api/orders/promo-codes/
 router.register("promo-codes", PromoCodeViewSet)
 # /api/orders/
-router.register("", OrderViewSet)
+router.register("", OrderViewSet, basename="orders")
 # /api/orders/<order_id>/
 orders_router = routers.NestedDefaultRouter(
     router,
